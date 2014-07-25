@@ -1,0 +1,27 @@
+#!/bin/sh
+
+echo ""
+echo "---"
+echo "Start python server"
+cd /vagrant/python-server
+python -m SimpleHTTPServer & 
+server_pid=$!
+
+while [ true ]
+do
+	response_code=`curl -s -I -o /dev/null -w "%{http_code}" http://localhost:8000`
+	if [ $response_code -eq 200 ]
+	then
+		break
+	fi
+done
+
+echo ""
+echo "---"
+echo "Start the benchmarking"
+ab -n 30 -c 3 -g xxx http://localhost:8000/ 
+
+echo ""
+echo "---"
+echo "Stop python server"
+kill -9 $server_pid
