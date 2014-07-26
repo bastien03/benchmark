@@ -19,7 +19,7 @@ done
 echo ""
 echo "---"
 echo "Start the benchmarking"
-ab -n 30 -c 3 -g xxx http://localhost:8000/ 
+ab -n 4000 -c 200 -g xxx http://localhost:8000/ 
 
 echo ""
 echo "---"
