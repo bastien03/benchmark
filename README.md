@@ -3,10 +3,10 @@
 
 ## Introduction
 
-THe script `benchmarking` starts sevral http servers and does some concurrent requests on them to measure their performance.
+The script `benchmarking` starts sevral http servers and does some concurrent requests on them to measure their performance.
 
 List of http servers:
- - pthon SimpleHTTPServer
+ - python SimpleHTTPServer
 
 ## How to start it
 
