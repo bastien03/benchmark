@@ -6,7 +6,7 @@
 THe script `benchmarking` starts sevral http servers and does some concurrent requests on them to measure their performance.
 
 List of http servers:
- - pthon SimpleHTTPServer
+ - pthon SimpleHTTPServer: http://localhost:8000/
 
 ## How to start it
 
