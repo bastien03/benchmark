@@ -1,9 +1,15 @@
 #!/bin/sh
 
+numberRequests=200
+numberConcurrentRequests=10
+
+echo "Doing ${numberRequests} requests, ${numberConcurrentRequests} at the same time."
+
+
 echo ""
 echo "---"
 echo "Start python server"
-cd /vagrant/python-server
+cd /vagrant/www
 python -m SimpleHTTPServer & 
 server_pid=$!
 
@@ -19,9 +25,14 @@ done
 echo ""
 echo "---"
 echo "Start the benchmarking"
-ab -n 4000 -c 200 -g xxx http://localhost:8000/ 
+ab -n ${numberRequests} -c ${numberConcurrentRequests} http://localhost:8000/ 
 
 echo ""
 echo "---"
 echo "Stop python server"
 kill -9 $server_pid
+
+echo ""
+echo "---"
+echo "Start the benchmarking with nginx"
+ab -n ${numberRequests} -c ${numberConcurrentRequests} http://localhost:81/

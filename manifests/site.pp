@@ -21,6 +21,6 @@ package { "apache2-utils":
 class { 'nginx': }
 
 nginx::resource::vhost { 'ab':
-	www_root => '/vagrant/python-server/',
-	listen_port => 8888
+	www_root => '/vagrant/www/',
+	listen_port => 81
 }

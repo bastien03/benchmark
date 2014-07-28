@@ -7,6 +7,7 @@ The script `benchmarking` starts sevral http servers and does some concurrent re
 
 List of http servers:
  - python SimpleHTTPServer: http://localhost:8000/
+ - nginx: http://localhost:81
 
 
 ## How to start it
