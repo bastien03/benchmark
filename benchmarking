@@ -1,38 +1,42 @@
 #!/bin/sh
 
-numberRequests=200
+numberRequests=600
 numberConcurrentRequests=10
 
 echo "Doing ${numberRequests} requests, ${numberConcurrentRequests} at the same time."
 
 
-echo ""
-echo "---"
-echo "Start python server"
-cd /vagrant/www
-python -m SimpleHTTPServer & 
-server_pid=$!
+# echo ""
+# echo "---"
+# echo "Start python server"
+# cd /vagrant/www
+# python -m SimpleHTTPServer & 
+# server_pid=$!
 
-while [ true ]
-do
-	response_code=`curl -s -I -o /dev/null -w "%{http_code}" http://localhost:8000`
-	if [ $response_code -eq 200 ]
-	then
-		break
-	fi
-done
+# while [ true ]
+# do
+# 	response_code=`curl -s -I -o /dev/null -w "%{http_code}" http://localhost:8000`
+# 	if [ $response_code -eq 200 ]
+# 	then
+# 		break
+# 	fi
+# done
 
-echo ""
-echo "---"
-echo "Start the benchmarking"
-ab -n ${numberRequests} -c ${numberConcurrentRequests} http://localhost:8000/ 
+# echo ""
+# echo "---"
+# echo "Start the benchmarking"
+# ab -n ${numberRequests} -c ${numberConcurrentRequests} http://localhost:8000/ 
 
-echo ""
-echo "---"
-echo "Stop python server"
-kill -9 $server_pid
+# echo ""
+# echo "---"
+# echo "Stop python server"
+# kill -9 $server_pid
 
 echo ""
 echo "---"
 echo "Start the benchmarking with nginx"
-ab -n ${numberRequests} -c ${numberConcurrentRequests} http://localhost:81/
+for x in 1 10 100 200 300 400 500
+do
+	ab -n ${numberRequests} -c ${x} -e results/nginx-${x}.csv http://localhost:81/
+	echo "${x} -> `cat results/nginx-${x}.csv | grep 90,`" >> results/nginx.csv
+done
