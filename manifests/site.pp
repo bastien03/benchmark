@@ -24,3 +24,15 @@ nginx::resource::vhost { 'ab':
 	www_root => '/vagrant/www/',
 	listen_port => 81
 }
+
+class { 'apache': 
+	#confd_dir => '/vagrant/manifests/modules/apache/files/',
+}
+
+apache::vhost { 'apache':
+	#port => 8201,
+	default_vhost => true,
+ 	docroot => '/vagrant/www',
+ 	#docroot_owner => 'www-data',
+  	#docroot_group => 'www-data',
+}
