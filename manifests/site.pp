@@ -26,13 +26,9 @@ nginx::resource::vhost { 'ab':
 }
 
 class { 'apache': 
-	#confd_dir => '/vagrant/manifests/modules/apache/files/',
 }
 
-apache::vhost { 'apache':
-	#port => 8201,
-	default_vhost => true,
- 	docroot => '/vagrant/www',
- 	#docroot_owner => 'www-data',
-  	#docroot_group => 'www-data',
+file {"/var/www/index.html":
+	ensure => present,
+	source => "/vagrant/www/index.html"
 }

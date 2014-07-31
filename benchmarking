@@ -1,6 +1,6 @@
 #!/bin/sh
 
-numberRequests=600
+numberRequests=1000
 numberConcurrentRequests=10
 
 echo "Doing ${numberRequests} requests, ${numberConcurrentRequests} at the same time."
@@ -39,4 +39,7 @@ for x in 1 10 100 200 300 400 500
 do
 	ab -n ${numberRequests} -c ${x} -e results/nginx-${x}.csv http://localhost:81/
 	echo "${x} -> `cat results/nginx-${x}.csv | grep 90,`" >> results/nginx.csv
+
+	ab -n ${numberRequests} -c ${x} -e results/apache-${x}.csv http://localhost:82/
+	echo "${x} -> `cat results/apache-${x}.csv | grep 90,`" >> results/apache.csv
 done
