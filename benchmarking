@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-numberRequests=1000
+numberRequests=10
 numberConcurrentRequests=10
 
 echo "Doing ${numberRequests} requests, ${numberConcurrentRequests} at the same time."
@@ -35,11 +35,32 @@ echo "Doing ${numberRequests} requests, ${numberConcurrentRequests} at the same 
 echo ""
 echo "---"
 echo "Start the benchmarking with nginx"
-for x in 1 10 100 200 300 400 500
+echo "" > results/test.json
+echo "" > results/nginx.csv
+
+xValues=(1 2 3 4)
+
+for x in "${xValues[@]}"
 do
+	# run test and save results in a csv file
 	ab -n ${numberRequests} -c ${x} -e results/nginx-${x}.csv http://localhost:81/
+
+	# extract the 90% result
 	echo "${x} -> `cat results/nginx-${x}.csv | grep 90,`" >> results/nginx.csv
 
-	ab -n ${numberRequests} -c ${x} -e results/apache-${x}.csv http://localhost:82/
-	echo "${x} -> `cat results/apache-${x}.csv | grep 90,`" >> results/apache.csv
+	# remove the csv file
+	rm results/nginx-${x}.csv
+
+	#ab -n ${numberRequests} -c ${x} -e results/apache-${x}.csv http://localhost:82/
+	#echo "${x} -> `cat results/apache-${x}.csv | grep 90,`" >> results/apache.csv
 done
+
+# build the json file
+fileName=results/test.json
+echo '{ "xValues": [' >> $fileName
+for x in "${xValues[@]}"
+do
+	echo "${x}," >> $fileName
+done
+echo '],"datas": [' >> $fileName
+echo ']}' >> $fileName

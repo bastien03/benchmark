@@ -1,25 +1,38 @@
 <h1>Performance tests</h1>
-<canvas id="myChart" width="400" height="400"></canvas>
+<canvas id="myChart" ></canvas>
 
 <script>
+	var colors = [
+	    // "#DF7401",
+	    // "#0174DF",
+	    // "#B40404",
+	    // "#04B431",
+	    // "#FFFF00"
+	    "#D0F5A9", "#74DF00", "#4B8A08", // green
+	    "#F3E2A9", "#DBA901", "#886A08", // orange
+	]
+
 	var ctx = document.getElementById("myChart").getContext("2d");
+	var i = 0;
 	var data = {
-		labels: [{{model.xValues}}],
-	    datasets: [
+        labels: [{{model.xValues}}],
+        datasets: [
 	    	{{#model.datas}}
 	        {
 	            label: "{{label}}",
-	            fillColor: "rgba(220,220,220,0.2)",
-	            strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
+	            strokeColor: colors[i % colors.length],
+	            pointColor: colors[i++ % colors.length],
 	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
-	            pointHighlightStroke: "rgba(220,220,220,1)",
 	            data: [{{data}}]
 	        },
 	        {{/model.datas}}
 	    ]
 	};
-	var options = {};
+	var options = {
+		datasetStroke: false,
+		datasetFill: false,
+		scaleShowLabels: true,
+		responsive: true
+	};
 	var myLineChart = new Chart(ctx).Line(data, options);
 </script>
