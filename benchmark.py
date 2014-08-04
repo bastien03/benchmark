@@ -1,15 +1,32 @@
-from subprocess import call
-import os
+import subprocess
+import re
 
-xValues = [1,2,3,4]
+###
+# Represents an output of the ab command
+###
+class ABResult:
+
+	def extractString(self, pattern):
+		return re.search(pattern, output).group(1)
+
+	def __init__(self, output):
+		self.output = output
+		self.hostname = self.extractString('Server Hostname:        (.+?)\n')
+		self.port = self.extractString('Server Port:            (.+?)\n')
+		self.requestPerSecond = self.extractString('Requests per second:    (.+?)\n')
+
+xValues = [1]
 numberOfRequests = 10
-currentDir = os.path.dirname(os.path.realpath(__file__))
-print currentDir + "/results/nginx-" + str(1) + ".csv"
+abResults = []
 
 for x in xValues:
-	call(["ab",
+	proc = subprocess.Popen([
+		  "ab",
 		  "-c " + str(x),
 		  "-n " + str(numberOfRequests),
-		  "-e  " + currentDir + "/results/nginx-" + str(x) + ".csv",
 		  "http://localhost:81/"
-	])
+	], stdout=subprocess.PIPE)
+	output = proc.stdout.read()
+	abResults.append(ABResult(output))
+
+print "http://" + abResults[0].hostname + ":" + abResults[0].port + " - " + abResults[0].requestPerSecond
