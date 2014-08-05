@@ -36,11 +36,11 @@ xValues = range(1,10)
 numberOfRequests = 10
 urls = [
 	"http://localhost:81/", 
-	"http://localhost:82/", 
-	"http://myrba.net/", 
-	"http://lequipe.fr/",
-	"http://google.fr/",
-	"http://lamontagne.fr/",
+	# "http://localhost:82/", 
+	# "http://myrba.net/", 
+	# "http://lequipe.fr/",
+	# "http://google.fr/",
+	# "http://lamontagne.fr/",
 ]
 
 data = []
@@ -52,6 +52,8 @@ for url in urls:
 			  "ab",
 			  "-c " + str(x),
 			  "-n " + str(numberOfRequests),
+			  "-g xxx.tsv",
+			  "-e fff.csv",
 			  url
 		], stdout=subprocess.PIPE)
 		output = proc.stdout.read()
